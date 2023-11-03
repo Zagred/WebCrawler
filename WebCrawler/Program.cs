@@ -27,10 +27,7 @@ namespace WebCrawler
                         {
                             links.Add(att.Value, att.Value);
                         }
-                        catch
-                        {
-                            Console.WriteLine(att.Value);
-                        }
+                        catch { }
                     }
                 }
 
