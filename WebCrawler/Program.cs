@@ -11,36 +11,10 @@ namespace WebCrawler
 {
     internal class Program
     {
-        public static async Task StartCralwer()
+        public static void linksFromSite(List<string> webSites)
         {
-           // var url = @"https://en.wikipedia.org/wiki/English_Wikipedia";
-            var url = @"https://www.automobile.tn/fr/neuf/audi ";
-            var httpClient = new HttpClient();
-            var html = await httpClient.GetStringAsync(url);
-
-            var HtmlDocument=new HtmlDocument();
-            HtmlDocument.LoadHtml(html);
-
-           var divs= HtmlDocument.DocumentNode.Descendants("div").Where(node => node.GetAttributeValue("class", "").Equals("versions-item")).ToList();
-            foreach ( var div in divs )
-            {
-                var link = div.Descendants("a").FirstOrDefault().ChildAttributes("href").FirstOrDefault().Value;
-                Console.WriteLine($"https://www.automobile.tn{link}");
-            }
-        }
-
-        static void Main(string[] args)
-        {
-            //StartCralwer();
-            List<string> webSites = new List<string>()
-            {
-                @"https://en.wikipedia.org/wiki/Wikipedia:About",
-                @"https://www.automobile.tn/fr/neuf/audi ",
-                @"https://overframe.gg/tier-list/primary-weapons/",
-                @"https://overframe.gg/tier-list/secondary-weapons/",
-            };
-            var url = @"https://en.wikipedia.org/wiki/Wikipedia:About";
             HtmlWeb hw = new HtmlWeb();
+            Dictionary<string, string> links = new Dictionary<string, string>();
             foreach (var website in webSites)
             {
                 HtmlDocument doc = hw.Load(website);
@@ -49,10 +23,30 @@ namespace WebCrawler
                     HtmlAttribute att = link.Attributes["href"];
                     if (att.Value[0] == 'h')
                     {
-                        Console.WriteLine(att.Value);
+                        try
+                        {
+                            links.Add(att.Value, att.Value);
+                        }
+                        catch
+                        {
+                            Console.WriteLine(att.Value);
+                        }
                     }
                 }
+
             }
+        }
+        static void Main(string[] args)
+        {;
+            List<string> webSites = new List<string>()
+            {
+                @"https://en.wikipedia.org/wiki/Wikipedia:About",
+                @"https://www.automobile.tn/fr/neuf/audi ",
+                @"https://overframe.gg/tier-list/primary-weapons/",
+                @"https://overframe.gg/tier-list/secondary-weapons/",
+            };
+            linksFromSite(webSites);
+            
         }
     }
 }
